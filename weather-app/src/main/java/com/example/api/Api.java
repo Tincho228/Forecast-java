@@ -26,7 +26,7 @@ public class Api {
                     return response.toString();
                 }
             } else {
-                return "GET request failed" + endpoint;
+                return "GET request failed";
             }
         } catch (java.net.MalformedURLException e) {
             System.err.println("MalformedURLException: " + e.getMessage());
