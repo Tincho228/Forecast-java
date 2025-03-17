@@ -10,23 +10,55 @@ public class Api {
     
     
     public String callApi(String lat, String lon) {
+        // Creating the endpoint
         String endpoint = BASE_URL + lat + "&lon=" + lon + "&appid=" + API_KEY ;
+        
         try {
             URL url = new URL(endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_OK) { // Checking code 200
                 try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
                     String inputLine;
                     StringBuilder response = new StringBuilder();
                     while ((inputLine = in.readLine()) != null) {
                         response.append(inputLine);
                     }
-                    return response.toString();
+                    return response.toString(); // Sending information back to the Controller
                 }
             } else {
-                return "GET request failed";
+                return "GET request failed"; // Sending information back to the Controller
+                
+            }
+        } catch (java.net.MalformedURLException e) {
+            System.err.println("MalformedURLException: " + e.getMessage());
+            return "MalformedURLException: " + e.getMessage();
+        } catch (java.io.IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            return "IOException: " + e.getMessage();
+        }
+    }
+    public String callApibyCity(String cityName) {
+        // Creating the endpoint
+        String endpoint = "https://pro.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + API_KEY ;
+        try {
+            URL url = new URL(endpoint); 
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) { // Checking code 200
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    return response.toString(); // Sending information back to the Controller
+                }
+            } else { // If the code is not 200
+                return "GET request failed"; // Sending information back to the Controller
+                
             }
         } catch (java.net.MalformedURLException e) {
             System.err.println("MalformedURLException: " + e.getMessage());
